@@ -21,8 +21,8 @@ class CreateUserBillsTable extends Migration
             $table->foreignId('bill_id')
                     ->constrained('bills')
                     ->onDelete('cascade');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

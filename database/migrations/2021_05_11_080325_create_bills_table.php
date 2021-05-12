@@ -25,8 +25,8 @@ class CreateBillsTable extends Migration
                     ->onDelete('cascade');
             $table->float('total');
             $table->tinyInteger('status')->unsigned()->default(BillStatus::confirm);
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

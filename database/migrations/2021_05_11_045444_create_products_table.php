@@ -17,11 +17,12 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('image');
             $table->string('name')->unique();
-            $table->string('description');
+            $table->longText('description');
             $table->float('price');
+            $table->float('sale_price')->nullable()->default(null);
             $table->integer('quantities');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

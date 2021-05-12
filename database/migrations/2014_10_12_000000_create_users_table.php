@@ -20,13 +20,13 @@ class CreateUsersTable extends Migration
             $table->string('lastname');
             $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->string('password', 12);
+            $table->string('password');
             $table->string('address');
-            $table->integer('phone');
+            $table->string('phone',20);
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
