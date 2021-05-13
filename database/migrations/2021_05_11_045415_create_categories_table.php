@@ -17,11 +17,11 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('image');
             $table->string('name')->unique();
-            $table->unsignedBigInteger('parent_id')->nullable()->default(0);
-//            $table->foreign('parent_id')
-//                    ->references('id')
-//                    ->on('categories')
-//                    ->onDelete('cascade');
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')
+                    ->references('id')
+                    ->on('categories')
+                    ->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

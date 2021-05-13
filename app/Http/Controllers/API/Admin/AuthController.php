@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:admin')->except('login');
-    }
-
     public function index()
     {
         $admin = auth('admin')->user();

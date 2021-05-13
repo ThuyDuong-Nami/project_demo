@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Enums\BillStatus;
 
-class CreateBillsTable extends Migration
+class CreateProductImagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,19 +13,12 @@ class CreateBillsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bills', function (Blueprint $table) {
+        Schema::create('product_images', function (Blueprint $table) {
             $table->id();
-            $table->string('bill_code', 10);
-            $table->foreignId('user_id')
-                    ->constrained('users')
-                    ->onDelete('cascade');
             $table->foreignId('product_id')
                     ->constrained('products')
                     ->onDelete('cascade');
-            $table->float('total');
-            $table->string('address');
-            $table->string('phone',20);
-            $table->tinyInteger('status')->unsigned()->default(BillStatus::confirm);
+            $table->string('image');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -39,6 +31,6 @@ class CreateBillsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bills');
+        Schema::dropIfExists('product_images');
     }
 }

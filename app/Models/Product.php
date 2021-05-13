@@ -11,7 +11,6 @@ class Product extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'image',
         'name',
         'description',
         'price',
@@ -21,5 +20,10 @@ class Product extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'product_categories', 'product_id', 'category_id');
+    }
+
+    public function productImages()
+    {
+        return $this->hasMany(ProductImage::class);
     }
 }
