@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\API\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\LoginRequest;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:user')->except('login');
-    }
-
     public function index()
     {
         $admin = auth('user')->user();
