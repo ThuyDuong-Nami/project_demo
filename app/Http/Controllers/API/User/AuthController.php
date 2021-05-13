@@ -4,7 +4,8 @@ namespace App\Http\Controllers\API\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\LoginRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\User\RegisterRequest;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -16,7 +17,15 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $validatedData = $request->validated();
+        $login_type = filter_var($request->input('username'), FILTER_VALIDATE_EMAIL )
+            ? 'email'
+            : 'username';
+
+        $request->merge([
+            $login_type => $request->input('username')
+        ]);
+
+        $validatedData = $request->only([$login_type, 'password']);
 
         if (! $token = auth('user')->attempt($validatedData)){
             return response()->json([
@@ -43,5 +52,15 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Logout success!',
         ], 200);
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        $validatedData = $request->validated();
+        $user = User::create($validatedData);
+        return response()->json([
+            'data'    => $user,
+            'message' => 'User successfully registered!',
+        ],201);
     }
 }

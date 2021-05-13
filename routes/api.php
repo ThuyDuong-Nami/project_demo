@@ -21,6 +21,7 @@ use App\Http\Controllers\API\User;
 //});
 Route::post('admin/login', [Admin\AuthController::class, 'login']);
 Route::post('login', [User\AuthController::class, 'login']);
+Route::post('register', [User\AuthController::class, 'register']);
 
 Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin'], function () {
     Route::get('/me', [Admin\AuthController::class, 'index']);
