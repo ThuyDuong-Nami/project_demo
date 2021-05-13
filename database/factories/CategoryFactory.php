@@ -24,20 +24,7 @@ class CategoryFactory extends Factory
         return [
             'image' => $this->faker->image('public/storage/categories',400, 300),
             'name'  => $this->faker->unique()->name,
+            'parent_id' => null,
         ];
-    }
-
-    /**
-     * Indicate that the user is suspended.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function suspended()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'parent_id' => rand(0, Category::factory()->create()->id),
-            ];
-        });
     }
 }

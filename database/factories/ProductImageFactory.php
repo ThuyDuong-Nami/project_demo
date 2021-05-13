@@ -2,19 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductCategory;
+use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ProductCategoryFactory extends Factory
+class ProductImageFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = ProductCategory::class;
+    protected $model = ProductImage::class;
 
     /**
      * Define the model's default state.
@@ -25,7 +24,7 @@ class ProductCategoryFactory extends Factory
     {
         return [
             'product_id' => Product::factory(),
-            'category_id' => Category::factory(),
+            'image'      => $this->faker->image('public/storage/products',400, 300),
         ];
     }
 }

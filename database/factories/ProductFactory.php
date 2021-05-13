@@ -24,7 +24,7 @@ class ProductFactory extends Factory
     {
         $this->faker->addProvider(new Prices($this->faker));
         return [
-            'image' => $this->faker->image('public/storage/products',400, 300),
+//            'image' => $this->faker->image('public/storage/products',400, 300),
             'name'  => $this->faker->unique()->name,
             'description' => $this->faker->paragraph(4,true),
             'price' => $this->faker->price(),
