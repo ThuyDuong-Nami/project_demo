@@ -38,8 +38,7 @@ class UserRequest extends FormRequest
                 'email'     => 'required|email|unique:users,email'.$id,
                 'password'  => 'required|min:6',
                 'address'   => 'string',
-                'phone'     => 'string',
-                'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg',
+                'phone'     => 'numeric|min:10',
             ];
             break;
             default:
@@ -51,7 +50,7 @@ class UserRequest extends FormRequest
                     'email'     => 'required|email|unique:users',
                     'password'  => 'required|min:6',
                     'address'   => 'string',
-                    'phone'     => 'string',
+                    'phone'     => 'numeric|min:10',
                 ];
                 break;
         }
