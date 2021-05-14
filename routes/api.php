@@ -32,6 +32,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     Route::apiResource('user', Admin\UserController::class);
     Route::post('user/search', [Admin\UserController::class, 'search']);
+
+    Route::apiResource('category', Admin\CategoryController::class);
+    Route::post('category/search', [Admin\CategoryController::class, 'search']);
 });
 
 //User
