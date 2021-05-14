@@ -2,10 +2,10 @@
 
 namespace App\Transformers\Admin;
 
-use App\Models\Admin;
+use App\Models\User;
 use Flugg\Responder\Transformers\Transformer;
 
-class AdminTransformer extends Transformer
+class UserTransformer extends Transformer
 {
     /**
      * List of available relations.
@@ -24,17 +24,15 @@ class AdminTransformer extends Transformer
     /**
      * Transform the model.
      *
-     * @param  \App\Models\Admin $admin
+     * @param  \App\Models\User $user
      * @return array
      */
-    public function transform(Admin $admin)
+    public function transform(User $user)
     {
         return [
-            'id' => $admin->id,
-            'avatar' => $admin->avatar,
-            'name' => $admin->name,
-            'username' => $admin->username,
-            'email' => $admin->email,
-        ];
+            'id' => $user->id,
+            'avatar' => $user->avatar,
+            'username' => $user->username,
+            'email' => $user->email,       ];
     }
 }

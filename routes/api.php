@@ -29,6 +29,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     Route::apiResource('admin', Admin\AdminController::class);
     Route::post('admin/search', [Admin\AdminController::class, 'search']);
+
+    Route::apiResource('user', Admin\UserController::class);
+    Route::post('user/search', [Admin\UserController::class, 'search']);
 });
 
 //User

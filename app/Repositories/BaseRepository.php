@@ -64,12 +64,4 @@ abstract class BaseRepository implements RepositoryInterface
     {
         return $this->model->paginate($perPage);
     }
-
-    public function search($word)
-    {
-        return $this->model
-                ->where('name', 'like', '%'.$word.'%')
-                ->orWhere('username', 'like', '%'.$word.'%')
-                ->orWhere('email', 'like', '%'.$word.'%');
-    }
 }
