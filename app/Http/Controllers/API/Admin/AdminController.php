@@ -93,4 +93,10 @@ class AdminController extends Controller
         $this->adminRepo->destroy($admin->id);
         return responder()->success(['message' => 'Delete Success!'])->respond();
     }
+
+    public function search()
+    {
+        $search = $this->adminRepo->search(request()->input('word'));
+        return responder()->success($search)->respond();
+    }
 }

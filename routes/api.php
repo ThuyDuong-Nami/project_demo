@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('admin/logout', [Admin\AuthController::class, 'logout']);
 
     Route::apiResource('admin', Admin\AdminController::class);
+    Route::post('admin/search', [Admin\AdminController::class, 'search']);
 });
 
 //User
