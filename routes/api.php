@@ -18,15 +18,21 @@ use App\Http\Controllers\API\User;
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
-//});
+//})
+
+//Admin
 Route::post('admin/login', [Admin\AuthController::class, 'login']);
+
+Route::group(['middleware' => 'auth:admin'], function () {
+    Route::get('admin/me', [Admin\AuthController::class, 'index']);
+    Route::get('admin/logout', [Admin\AuthController::class, 'logout']);
+
+    Route::apiResource('admin', Admin\AdminController::class);
+});
+
+//User
 Route::post('login', [User\AuthController::class, 'login']);
 Route::post('register', [User\AuthController::class, 'register']);
-
-Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin'], function () {
-    Route::get('/me', [Admin\AuthController::class, 'index']);
-    Route::get('logout', [Admin\AuthController::class, 'logout']);
-});
 Route::group(['middleware' => 'auth:user'], function () {
     Route::get('/me', [User\AuthController::class, 'index']);
     Route::get('logout', [User\AuthController::class, 'logout']);

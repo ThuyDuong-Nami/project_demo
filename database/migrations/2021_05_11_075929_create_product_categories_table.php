@@ -22,7 +22,6 @@ class CreateProductCategoriesTable extends Migration
                     ->constrained('categories')
                     ->onDelete('cascade');
 //            $table->timestamps();
-            $table->softDeletes();
         });
     }
 

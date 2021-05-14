@@ -20,7 +20,6 @@ class CreateProductImagesTable extends Migration
                     ->onDelete('cascade');
             $table->string('image');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
