@@ -11,4 +11,12 @@ class AdminRepository extends BaseRepository
     {
         return Admin::class;
     }
+
+    public function search($word)
+    {
+        return $this->model
+                ->where('name', 'like', '%'.$word.'%')
+                ->orWhere('username', 'like', '%'.$word.'%')
+                ->orWhere('email', 'like', '%'.$word.'%');
+    }
 }

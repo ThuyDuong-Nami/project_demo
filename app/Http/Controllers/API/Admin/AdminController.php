@@ -97,6 +97,6 @@ class AdminController extends Controller
     public function search()
     {
         $search = $this->adminRepo->search(request()->input('word'));
-        return responder()->success($search)->respond();
+        return responder()->success($search, AdminTransformer::class)->respond();
     }
 }
