@@ -16,7 +16,16 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $validatedData = $request->validated();
+        $login_type = filter_var($request->input('username'),
+            FILTER_VALIDATE_EMAIL )
+            ? 'email'
+            : 'username';
+
+        $request->merge([
+            $login_type => $request->input('username')
+        ]);
+
+        $validatedData = $request->only([$login_type, 'password']);
 
         if (! $token = auth('admin')->attempt($validatedData)){
             return response()->json([
