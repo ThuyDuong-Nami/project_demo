@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Repositories\AdminRepository;
 use App\Repositories\CategoryRepository;
+use App\Repositories\ProductRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
         );
         $this->app->singleton(
             CategoryRepository::class,
+        );
+        $this->app->singleton(
+            ProductRepository::class,
         );
     }
 

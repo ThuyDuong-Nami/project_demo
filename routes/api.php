@@ -35,6 +35,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     Route::apiResource('category', Admin\CategoryController::class);
     Route::post('category/search', [Admin\CategoryController::class, 'search']);
+
+    Route::apiResource('product', Admin\ProductController::class);
+    Route::post('product/search', [Admin\ProductController::class, 'search']);
 });
 
 //User
