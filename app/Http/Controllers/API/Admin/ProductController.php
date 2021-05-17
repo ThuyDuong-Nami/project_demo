@@ -40,12 +40,15 @@ class ProductController extends Controller
     {
         $validatedData = $request->except('image', 'categories');
         $images = $request->file('image');
+
         $product = $this->productRepo->store($validatedData);
         foreach ($images as $image) {
             $imageName = $image->store('public/products');
             $product->productImages()->create(['image' => Storage::url($imageName)]);
         }
-        $product->categories()->attach($request->input('categories'));
+        foreach ($request->input('categories') as $category){
+            $product->categories()->attach($category);
+        }
         return responder()->success($product, ProductTransformer::class)->respond();
     }
 
@@ -72,7 +75,7 @@ class ProductController extends Controller
         $validatedData = $request->except(['image', 'categories']);
 
         $product->categories()->detach();
-        Storage::delete('public/'.$product->productImages);
+        Storage::delete('public/' . $product->productImages);
         $product->productImages()->delete();
 
         $images = $request->file('image');
@@ -82,8 +85,9 @@ class ProductController extends Controller
             $imageName = $image->store('public/products');
             $product->productImages()->create(['image' => Storage::url($imageName)]);
         }
-        $product->categories()->attach($request->input('categories'));
-
+        foreach ($request->input('categories') as $category){
+            $product->categories()->attach($category);
+        }
         return responder()->success($product, ProductTransformer::class)->respond();
     }
 
@@ -96,7 +100,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->categories()->detach();
-        Storage::delete('public/'.$product->productImages);
+        Storage::delete('public/' . $product->productImages);
         $product->productImages()->delete();
         $this->productRepo->destroy($product->id);
 

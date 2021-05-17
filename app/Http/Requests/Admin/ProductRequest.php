@@ -37,7 +37,8 @@ class ProductRequest extends FormRequest
                     'description' => 'string',
                     'price' => 'numeric',
                     'quantities' => 'numeric',
-                    'categories' => 'int'
+                    'categories' => 'required',
+                    'categories.*' => 'int'
                 ];
             break;
             default:
@@ -48,7 +49,8 @@ class ProductRequest extends FormRequest
                     'description' => 'string',
                     'price' => 'numeric',
                     'quantities' => 'numeric',
-                    'categories' => 'int'
+                    'categories' => 'required',
+                    'categories.*' => 'int'
                 ];
                 break;
         }
