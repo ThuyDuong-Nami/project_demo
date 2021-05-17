@@ -28,7 +28,6 @@ class CreateBillsTable extends Migration
             $table->string('phone',20);
             $table->tinyInteger('status')->unsigned()->default(BillStatus::confirm);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

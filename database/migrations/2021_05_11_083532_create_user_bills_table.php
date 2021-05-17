@@ -22,7 +22,6 @@ class CreateUserBillsTable extends Migration
                     ->constrained('bills')
                     ->onDelete('cascade');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

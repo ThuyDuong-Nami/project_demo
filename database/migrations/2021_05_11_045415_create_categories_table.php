@@ -23,7 +23,6 @@ class CreateCategoriesTable extends Migration
                     ->on('categories')
                     ->onDelete('cascade');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
