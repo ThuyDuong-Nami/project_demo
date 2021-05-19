@@ -38,6 +38,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     Route::apiResource('product', Admin\ProductController::class);
     Route::post('product/search', [Admin\ProductController::class, 'search']);
+
+    Route::post('file/import', [Admin\ProductController::class, 'import']);
 });
 
 //User

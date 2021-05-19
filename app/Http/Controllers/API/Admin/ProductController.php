@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductRequest;
+use App\Imports\ProductsImport;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
 use App\Transformers\Admin\ProductTransformer;
@@ -111,5 +112,12 @@ class ProductController extends Controller
     {
         $search = $this->productRepo->search(request()->input('word'));
         return responder()->success($search, ProductTransformer::class)->respond();
+    }
+
+    public function import()
+    {
+        $file = request()->file('filePath');
+        (new ProductsImport())->import($file);
+        return responder()->success(['message' => 'Import or Update products success'])->respond();
     }
 }
