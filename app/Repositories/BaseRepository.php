@@ -25,11 +25,6 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->model->all();
     }
 
-    public function getAllTrash()
-    {
-        return $this->model->withTrashed()->get();
-    }
-
     public function find($id)
     {
         return $this->model->find($id);
