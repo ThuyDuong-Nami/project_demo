@@ -11,13 +11,6 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
-    protected $adminRepo;
-
-    public function __construct(AdminRepository $adminRepo)
-    {
-        $this->adminRepo = $adminRepo;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +19,7 @@ class AdminController extends Controller
     public function index()
     {
         $perPage = request()->input('perPage');
-        $admins = $this->adminRepo->paginate($perPage);
+        $admins = Admin::paginate($perPage);
         return responder()->success($admins, AdminTransformer::class)->respond();
     }
 
@@ -43,9 +36,9 @@ class AdminController extends Controller
         if ($image = $request->file('avatar')){
             $imageName = $image->store('public/avatar');
             $adminArr = array_merge($validatedData, ['avatar' => Storage::url($imageName)]);
-            $admin = $this->adminRepo->store($adminArr);
+            $admin = Admin::create($adminArr);
         }else{
-            $admin = $this->adminRepo->store($validatedData);
+            $admin = Admin::create($validatedData);
         }
         return responder()->success($admin, AdminTransformer::class)->respond();
     }
@@ -75,9 +68,9 @@ class AdminController extends Controller
         if ($image = $request->file('avatar')){
             $imageName = $image->store('public/avatar');
             $adminArr = array_merge($validatedData, ['avatar' => Storage::url($imageName)]);
-            $admin = $this->adminRepo->update($admin->id, $adminArr);
+            $admin->update($adminArr);
         }else{
-            $admin = $this->adminRepo->update($admin->id, $validatedData);
+            $admin->update($validatedData);
         }
         return responder()->success($admin, AdminTransformer::class)->respond();
     }
@@ -90,13 +83,16 @@ class AdminController extends Controller
      */
     public function destroy(Admin $admin)
     {
-        $this->adminRepo->destroy($admin->id);
+        $admin->delete();
         return responder()->success(['message' => 'Delete Success!'])->respond();
     }
 
     public function search()
     {
-        $search = $this->adminRepo->search(request()->input('word'));
+        $word = request()->input('word');
+        $search = Admin::where('name', 'like', '%'.$word.'%')
+                        ->orWhere('username', 'like', '%'.$word.'%')
+                        ->orWhere('email', 'like', '%'.$word.'%');
         return responder()->success($search, AdminTransformer::class)->respond();
     }
 }
