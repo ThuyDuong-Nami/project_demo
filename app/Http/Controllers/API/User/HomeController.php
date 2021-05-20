@@ -8,13 +8,16 @@ use App\Models\Product;
 use App\Transformers\Admin\ProductTransformer;
 use App\Transformers\User\CategoryTransformer;
 use App\Transformers\Admin\CategoryTransformer as SideBar;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class HomeController extends Controller
 {
     public function index()
     {
-//        $perPage = request()->input('perPage');
-        $categories = Category::whereNull('parent_id')->withCount('products')->get();
+        $perPage = request()->input('perPage');
+        $categories = Category::whereNull('parent_id')->withCount('products')->paginate($perPage);
         foreach($categories as $category) {
             if ( $category->subCategory ) {
                 foreach( $category->subCategory as $sub) {
@@ -34,7 +37,18 @@ class HomeController extends Controller
     public function productsCategory(Category $category)
     {
         $perPage = request()->input('perPage');
-        $product = $category->products()->paginate($perPage);
+        if (!$perPage){
+            $perPage = config('perPage.perPage');
+        }
+        $product = $category->products;
+        if ($category->subCategory()){
+            foreach ($category->subCategory as $sub){
+                foreach ($sub->products as $subProduct){
+                    $product->push($subProduct);
+                }
+            }
+        }
+        $product = $this->paginate($product, $perPage);
         return responder()->success($product, ProductTransformer::class)->respond();
     }
 
@@ -42,4 +56,25 @@ class HomeController extends Controller
     {
         return responder()->success($product, ProductTransformer::class)->respond();
     }
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    public function paginate($items, $perPage = 5, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage),
+            $items->count(),
+            $perPage,
+            $page,
+            [
+                'path' => Paginator::resolveCurrentPath(),
+                'pageName' => 'page',
+            ]
+        );
+    }
+
 }

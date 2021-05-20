@@ -14,6 +14,17 @@ class ProductImage extends Model
         'image'
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->perPage = config('perPage.perPage');
+    }
+
+    public function setPerPage($perPage)
+    {
+        $this->perPage = $perPage;
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class);
