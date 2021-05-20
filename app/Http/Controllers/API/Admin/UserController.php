@@ -5,19 +5,11 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
-use App\Repositories\UserRepository;
 use App\Transformers\Admin\UserTransformer;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    protected $userRepo;
-
-    public function __construct(UserRepository $userRepo)
-    {
-        $this->userRepo = $userRepo;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         $perPage = request()->input('perPage');
-        $users = $this->userRepo->paginate($perPage);
+        $users = User::paginate($perPage);
         return responder()->success($users, UserTransformer::class)->respond();
     }
 
@@ -43,9 +35,9 @@ class UserController extends Controller
         if ($image = $request->file('avatar')){
             $imageName = $image->store('public/avatar');
             $userArr = array_merge($validatedData, ['avatar' => Storage::url($imageName)]);
-            $user = $this->userRepo->store($userArr);
+            $user = User::create($userArr);
         }else{
-            $user = $this->userRepo->store($validatedData);
+            $user = User::create($validatedData);
         }
         return responder()->success($user, UserTransformer::class)->respond();
     }
@@ -75,9 +67,9 @@ class UserController extends Controller
         if ($image = $request->file('avatar')){
             $imageName = $image->store('public/avatar');
             $userArr = array_merge($validatedData, ['avatar' => Storage::url($imageName)]);
-            $user = $this->userRepo->update($user->id, $userArr);
+            $user->update($userArr);
         }else{
-            $user = $this->userRepo->update($user->id, $validatedData);
+            $user->update($validatedData);
         }
         return responder()->success($user, UserTransformer::class)->respond();
     }
@@ -90,13 +82,15 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->userRepo->destroy($user->id);
+        $user->delete();
         return responder()->success(['message' => 'Delete Success!'])->respond();
     }
 
     public function search()
     {
-        $search = $this->userRepo->search(request()->input('word'));
+        $word = request()->input('word');
+        $search = User::where('username', 'like', '%'.$word.'%')
+                        ->orWhere('email', 'like', '%'.$word.'%');
         return responder()->success($search, UserTransformer::class)->respond();
     }
 }

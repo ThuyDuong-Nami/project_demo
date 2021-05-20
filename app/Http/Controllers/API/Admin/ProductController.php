@@ -4,20 +4,13 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductRequest;
+use App\Imports\ProductsImport;
 use App\Models\Product;
-use App\Repositories\ProductRepository;
 use App\Transformers\Admin\ProductTransformer;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    protected $productRepo;
-
-    public function __construct(ProductRepository $productRepo)
-    {
-        $this->productRepo = $productRepo;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +19,7 @@ class ProductController extends Controller
     public function index()
     {
         $perPage = request()->input('perPage');
-        $products = $this->productRepo->paginate($perPage);
+        $products = Product::paginate($perPage);
         return responder()->success($products, ProductTransformer::class)->respond();
     }
 
@@ -41,12 +34,12 @@ class ProductController extends Controller
         $validatedData = $request->except('image', 'categories');
         $images = $request->file('image');
 
-        $product = $this->productRepo->store($validatedData);
+        $product = Product::create($validatedData);
         foreach ($images as $image) {
             $imageName = $image->store('public/products');
             $product->productImages()->create(['image' => Storage::url($imageName)]);
         }
-        foreach ($request->input('categories') as $category){
+        foreach ($request->input('categories') as $category) {
             $product->categories()->attach($category);
         }
         return responder()->success($product, ProductTransformer::class)->respond();
@@ -79,13 +72,13 @@ class ProductController extends Controller
         $product->productImages()->delete();
 
         $images = $request->file('image');
-        $product = $this->productRepo->update($product->id, $validatedData);
+        $product->update($validatedData);
 
         foreach ($images as $image) {
             $imageName = $image->store('public/products');
             $product->productImages()->create(['image' => Storage::url($imageName)]);
         }
-        foreach ($request->input('categories') as $category){
+        foreach ($request->input('categories') as $category) {
             $product->categories()->attach($category);
         }
         return responder()->success($product, ProductTransformer::class)->respond();
@@ -102,14 +95,23 @@ class ProductController extends Controller
         $product->categories()->detach();
         Storage::delete('public/' . $product->productImages);
         $product->productImages()->delete();
-        $this->productRepo->destroy($product->id);
+        $product->delete();
 
         return responder()->success(['message' => 'Delete Success!'])->respond();
     }
 
     public function search()
     {
-        $search = $this->productRepo->search(request()->input('word'));
+        $word = request()->input('word');
+        $search = Product::where('name', 'like', '%' . $word . '%')
+                            ->orWhere('price', 'like', '%' . $word . '%');
         return responder()->success($search, ProductTransformer::class)->respond();
+    }
+
+    public function import()
+    {
+        $file = request()->file('filePath');
+        (new ProductsImport())->import($file);
+        return responder()->success(['message' => 'Import or Update products success'])->respond();
     }
 }

@@ -38,8 +38,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('user/search', [Admin\UserController::class, 'search']);
     Route::post('category/search', [Admin\CategoryController::class, 'search']);
     Route::post('product/search', [Admin\ProductController::class, 'search']);
-});
 
+    Route::post('file/import', [Admin\ProductController::class, 'import']);
+});
 //User
 Route::prefix('public')->group(function (){
     Route::post('login', [User\AuthController::class, 'login']);

@@ -31,7 +31,7 @@ class ProfileRequest extends FormRequest
 //                    'avatar'    => 'image|mimes:jpeg,png,jpg,gif,svg',
             'firstname' => 'string',
             'lastname'  => 'string',
-            'username'  => 'string|unique:users',
+            'username'  => 'string|unique:users,username,'.$this->user('user')->id,
             'email'     => 'required|email|unique:users,email,'.$this->user('user')->id,
         ];
         return $rules;

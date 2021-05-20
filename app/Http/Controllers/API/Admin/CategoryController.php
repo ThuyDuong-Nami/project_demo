@@ -5,19 +5,11 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Models\Category;
-use App\Repositories\CategoryRepository;
 use App\Transformers\Admin\CategoryTransformer;
 use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
-    protected $categoryRepo;
-
-    public function __construct(CategoryRepository $categoryRepo)
-    {
-        $this->categoryRepo = $categoryRepo;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
         $perPage = request()->input('perPage');
-        $categories = $this->categoryRepo->paginate($perPage);
+        $categories = Category::paginate($perPage);
         return responder()->success($categories, CategoryTransformer::class)->respond();
     }
 
@@ -43,9 +35,9 @@ class CategoryController extends Controller
         if ($image = $request->file('image')){
             $imageName = $image->store('public/categories');
             $categoryArr = array_merge($validatedData, ['image' => Storage::url($imageName)]);
-            $category = $this->categoryRepo->store($categoryArr);
+            $category = Category::create($categoryArr);
         }else {
-            $category = $this->categoryRepo->store($validatedData);
+            $category = Category::create($validatedData);
         }
         return responder()->success($category, CategoryTransformer::class)->respond();
 
@@ -76,9 +68,9 @@ class CategoryController extends Controller
         if ($image = $request->file('image')){
             $imageName = $image->store('public/categories');
             $categoryArr = array_merge($validatedData, ['image' => Storage::url($imageName)]);
-            $category = $this->categoryRepo->update($category->id, $categoryArr);
+            $category->update($categoryArr);
         }else{
-            $category = $this->categoryRepo->update($category->id, $validatedData);
+            $category->update($validatedData);
         }
         return responder()->success($category, CategoryTransformer::class)->respond();
     }
@@ -91,13 +83,14 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $this->categoryRepo->destroy($category->id);
+        $category->delete();
         return responder()->success(['message' => 'Delete Success!'])->respond();
     }
 
     public function search()
     {
-        $search = $this->categoryRepo->search(request()->input('word'));
+        $word = request()->input('word');
+        $search = Category::where('name', 'like', '%'.$word.'%');
         return responder()->success($search, CategoryTransformer::class)->respond();
     }
 }

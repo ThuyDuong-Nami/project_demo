@@ -5,30 +5,29 @@ namespace App\Http\Controllers\API\User;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
-use App\Repositories\CategoryRepository;
 use App\Transformers\Admin\ProductTransformer;
 use App\Transformers\User\CategoryTransformer;
 use App\Transformers\Admin\CategoryTransformer as SideBar;
 
 class HomeController extends Controller
 {
-    protected $categoryRepo;
-
-    public function __construct(CategoryRepository $categoryRepo)
-    {
-        $this->categoryRepo = $categoryRepo;
-    }
-
     public function index()
     {
 //        $perPage = request()->input('perPage');
-        $categories = $this->categoryRepo->countProducts();
+        $categories = Category::whereNull('parent_id')->withCount('products')->get();
+        foreach($categories as $category) {
+            if ( $category->subCategory ) {
+                foreach( $category->subCategory as $sub) {
+                    $category->products_count += $sub->products_count;
+                }
+            }
+        }
         return responder()->success($categories, CategoryTransformer::class)->respond();
     }
 
     public function sidebar()
     {
-        $categories = $this->categoryRepo->getSubCategory();
+        $categories = Category::whereNull('parent_id');
         return responder()->success($categories, SideBar::class)->respond();
     }
 
