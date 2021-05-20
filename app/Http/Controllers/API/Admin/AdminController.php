@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminRequest;
 use App\Models\Admin;
-use App\Repositories\AdminRepository;
 use App\Transformers\Admin\AdminTransformer;
 use Illuminate\Support\Facades\Storage;
 
