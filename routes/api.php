@@ -27,13 +27,12 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('admin/me', [Admin\AuthController::class, 'index']);
     Route::get('admin/logout', [Admin\AuthController::class, 'logout']);
 
-    Route::apiResource('admin', Admin\AdminController::class);
+    Route::apiResources([
+        'admin' => Admin\AdminController::class,
+        'user'  => Admin\UserController::class,
+    ]);
     Route::post('admin/search', [Admin\AdminController::class, 'search']);
-
-    Route::apiResource('user', Admin\UserController::class);
-    Route::post('user/search', [Admin\UserController::class, 'search']);
 });
-
 //User
 Route::post('login', [User\AuthController::class, 'login']);
 Route::post('register', [User\AuthController::class, 'register']);
