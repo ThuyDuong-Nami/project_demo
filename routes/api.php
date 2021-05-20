@@ -32,6 +32,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
         'user'  => Admin\UserController::class,
     ]);
     Route::post('admin/search', [Admin\AdminController::class, 'search']);
+    Route::post('user/search', [Admin\UserController::class, 'search']);
 });
 //User
 Route::post('login', [User\AuthController::class, 'login']);
