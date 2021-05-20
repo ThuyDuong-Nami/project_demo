@@ -14,8 +14,8 @@ class ProductTransformer extends Transformer
      * @var string[]
      */
     protected $relations = [
-        'categories' => CategoryTransformer::class,
         'productImages' => ProductImageTransformer::class,
+        'categories' => CategoryTransformer::class,
     ];
 
     /**

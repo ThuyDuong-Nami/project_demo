@@ -58,10 +58,11 @@ class HomeController extends Controller
     }
 
     /**
-     * The attributes that are mass assignable.
+     * Paginate Collection
      *
-     * @var array
+     * @return LengthAwarePaginator
      */
+
     public function paginate($items, $perPage = 5, $page = null, $options = [])
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
