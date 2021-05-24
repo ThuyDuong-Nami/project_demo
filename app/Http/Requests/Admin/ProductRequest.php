@@ -8,7 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
-class CategoryRequest extends FormRequest
+class ProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,18 +29,28 @@ class CategoryRequest extends FormRequest
     {
         switch ($this->method()){
             case 'PUT':case 'PATCH':
-            $id = $this->route('category')->id ? ',' . $this->route('category')->id : '';
-            $rules = [
-                'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
-                'name' => 'required|unique:categories,name'.$id,
-                'parent_id' => 'int',
-            ];
+                $id = $this->route('product')->id ? ',' . $this->route('product')->id : '';
+                $rules = [
+                    'image' => 'required',
+                    'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                    'name' => 'string|unique:products,name'.$id,
+                    'description' => 'string',
+                    'price' => 'numeric',
+                    'quantities' => 'numeric',
+                    'categories' => 'required',
+                    'categories.*' => 'int'
+                ];
             break;
             default:
                 $rules = [
-                    'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
-                    'name' => 'required|unique:categories',
-                    'parent_id' => 'int',
+                    'image' => 'required',
+                    'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                    'name' => 'string|unique:products',
+                    'description' => 'string',
+                    'price' => 'numeric',
+                    'quantities' => 'numeric',
+                    'categories' => 'required',
+                    'categories.*' => 'int'
                 ];
                 break;
         }

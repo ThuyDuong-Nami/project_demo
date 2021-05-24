@@ -17,7 +17,8 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $login_type = filter_var($request->input('username'), FILTER_VALIDATE_EMAIL )
+        $login_type = filter_var($request->input('username'),
+            FILTER_VALIDATE_EMAIL )
             ? 'email'
             : 'username';
 

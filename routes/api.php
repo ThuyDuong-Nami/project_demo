@@ -31,11 +31,14 @@ Route::group(['middleware' => 'auth:admin'], function () {
         'admin' => Admin\AdminController::class,
         'user'  => Admin\UserController::class,
         'category' => Admin\CategoryController::class,
+        'product' => Admin\ProductController::class,
     ]);
     Route::post('admin/search', [Admin\AdminController::class, 'search']);
     Route::post('user/search', [Admin\UserController::class, 'search']);
     Route::post('category/search', [Admin\CategoryController::class, 'search']);
-    
+    Route::post('product/search', [Admin\ProductController::class, 'search']);
+
+    Route::post('file/import', [Admin\ProductController::class, 'import']);
 });
 
 //User
