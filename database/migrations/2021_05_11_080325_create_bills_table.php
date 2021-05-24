@@ -20,9 +20,6 @@ class CreateBillsTable extends Migration
             $table->foreignId('user_id')
                     ->constrained('users')
                     ->onDelete('cascade');
-            $table->foreignId('product_id')
-                    ->constrained('products')
-                    ->onDelete('cascade');
             $table->float('total');
             $table->string('address');
             $table->string('phone',20);
