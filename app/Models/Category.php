@@ -15,6 +15,17 @@ class Category extends Model
         'parent_id',
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->perPage = config('perPage.perPage');
+    }
+
+    public function setPerPage($perPage)
+    {
+        $this->perPage = $perPage;
+    }
+
     public function products()
     {
         return $this->belongsToMany(Product::class, 'product_categories', 'category_id', 'product_id');
@@ -22,6 +33,6 @@ class Category extends Model
 
     public function subCategory()
     {
-        return $this->hasMany(Category::class, 'parent_id', 'id');
+        return $this->hasMany(Category::class, 'parent_id', 'id')->withCount('products');
     }
 }

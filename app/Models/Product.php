@@ -16,6 +16,17 @@ class Product extends Model
         'quantities'
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->perPage = config('perPage.perPage');
+    }
+
+    public function setPerPage($perPage)
+    {
+        $this->perPage = $perPage;
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'product_categories', 'product_id', 'category_id');
@@ -25,4 +36,5 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
+
 }
