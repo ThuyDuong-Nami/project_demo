@@ -70,7 +70,7 @@ class ProductController extends Controller
         $validatedData = $request->except(['image', 'categories']);
 
         $product->categories()->detach();
-        Storage::delete('public/' . $product->productImages);
+        Storage::disk('s3')->delete($product->productImages);
         $product->productImages()->delete();
 
         $images = $request->file('image');
