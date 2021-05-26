@@ -33,8 +33,10 @@ class CategoryController extends Controller
         $validatedData = $request->validated();
 
         if ($image = $request->file('image')){
-            $imageName = $image->store('public/categories');
-            $categoryArr = array_merge($validatedData, ['image' => Storage::url($imageName)]);
+            $name = '/categories/' . $image->getClientOriginalName();
+            Storage::disk('s3')->put($name, file_get_contents($image));
+            $imageUrl = 'https://gumistore.s3-ap-southeast-1.amazonaws.com'.$name;
+            $categoryArr = array_merge($validatedData, ['image' => $imageUrl]);
             $category = Category::create($categoryArr);
         }else {
             $category = Category::create($validatedData);
@@ -66,8 +68,10 @@ class CategoryController extends Controller
         $validatedData = $request->validated();
 
         if ($image = $request->file('image')){
-            $imageName = $image->store('public/categories');
-            $categoryArr = array_merge($validatedData, ['image' => Storage::url($imageName)]);
+            $name = '/categories/' . $image->getClientOriginalName();
+            Storage::disk('s3')->put($name, file_get_contents($image));
+            $imageUrl = 'https://gumistore.s3-ap-southeast-1.amazonaws.com'.$name;
+            $categoryArr = array_merge($validatedData, ['image' => $imageUrl]);
             $category->update($categoryArr);
         }else{
             $category->update($validatedData);

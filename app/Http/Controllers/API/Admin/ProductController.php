@@ -36,8 +36,10 @@ class ProductController extends Controller
 
         $product = Product::create($validatedData);
         foreach ($images as $image) {
-            $imageName = $image->store('public/products');
-            $product->productImages()->create(['image' => Storage::url($imageName)]);
+            $name = '/products/' . $image->getClientOriginalName();
+            Storage::disk('s3')->put($name, file_get_contents($image));
+            $imageUrl = 'https://gumistore.s3-ap-southeast-1.amazonaws.com'.$name;
+            $product->productImages()->create(['image' => $imageUrl]);
         }
         foreach ($request->input('categories') as $category) {
             $product->categories()->attach($category);
@@ -75,8 +77,10 @@ class ProductController extends Controller
         $product->update($validatedData);
 
         foreach ($images as $image) {
-            $imageName = $image->store('public/products');
-            $product->productImages()->create(['image' => Storage::url($imageName)]);
+            $name = '/products/' . $image->getClientOriginalName();
+            Storage::disk('s3')->put($name, file_get_contents($image));
+            $imageUrl = 'https://gumistore.s3-ap-southeast-1.amazonaws.com'.$name;
+            $product->productImages()->create(['image' => $imageUrl]);
         }
         foreach ($request->input('categories') as $category) {
             $product->categories()->attach($category);
