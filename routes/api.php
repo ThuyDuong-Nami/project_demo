@@ -54,6 +54,8 @@ Route::prefix('public')->group(function (){
         Route::patch('profile', [User\ProfileController::class, 'update']);
         Route::patch('profile/changepass', [User\ProfileController::class, 'changePass']);
         Route::patch('profile/changeaddress', [User\ProfileController::class, 'changeAddress']);
+
+        Route::post('checkout', [User\CheckOutController::class, 'store']);
     });
 
     Route::get('/', [User\HomeController::class, 'index']);

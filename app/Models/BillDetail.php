@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserBill extends Model
+class BillDetail extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-      'user_id',
-      'bill_id',
+        'bill_id',
+        'product_id',
+        'quantity',
+        'price'
     ];
 
     public function __construct(array $attributes = [])
