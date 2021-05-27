@@ -8,9 +8,9 @@ use App\Models\Bill;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class BillController extends Controller
 {
-    public function createOrder(CheckOutRequest $request)
+    public function createBill(CheckOutRequest $request)
     {
         $validatedData = $request->except('items');
         $user = auth('user')->user();
