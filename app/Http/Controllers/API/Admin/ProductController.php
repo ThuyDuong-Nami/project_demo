@@ -71,7 +71,6 @@ class ProductController extends Controller
         $validatedData = $request->except(['image', 'categories']);
 
         $product->categories()->detach();
-        Storage::disk('s3')->delete($product->productImages);
         $product->productImages()->delete();
 
         $images = $request->file('image');
@@ -98,7 +97,6 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->categories()->detach();
-        Storage::disk('s3')->delete($product->productImages);
         $product->productImages()->delete();
         $product->delete();
 
