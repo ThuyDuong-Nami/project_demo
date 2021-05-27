@@ -23,7 +23,6 @@ class CreateBillDetailsTable extends Migration
                 ->onDelete('cascade');
             $table->integer('quantity');
             $table->float('price');
-            $table->timestamps();
         });
     }
 
