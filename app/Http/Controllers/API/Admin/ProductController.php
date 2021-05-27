@@ -8,6 +8,7 @@ use App\Imports\ProductsImport;
 use App\Models\Product;
 use App\Transformers\Admin\ProductTransformer;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -36,7 +37,7 @@ class ProductController extends Controller
 
         $product = Product::create($validatedData);
         foreach ($images as $image) {
-            $name = '/products/' . $image->getClientOriginalName();
+            $name = '/products/' . $product->id . Str::random(9) . '.' . $image->getClientOriginalExtension();
             Storage::disk('s3')->put($name, file_get_contents($image));
             $imageUrl = 'https://gumistore.s3-ap-southeast-1.amazonaws.com'.$name;
             $product->productImages()->create(['image' => $imageUrl]);
@@ -77,7 +78,7 @@ class ProductController extends Controller
         $product->update($validatedData);
 
         foreach ($images as $image) {
-            $name = '/products/' . $image->getClientOriginalName();
+            $name = '/products/' . $product->id . Str::random(9) . '.' . $image->getClientOriginalExtension();
             Storage::disk('s3')->put($name, file_get_contents($image));
             $imageUrl = 'https://gumistore.s3-ap-southeast-1.amazonaws.com'.$name;
             $product->productImages()->create(['image' => $imageUrl]);
@@ -97,7 +98,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->categories()->detach();
-        Storage::delete('public/' . $product->productImages);
+        Storage::disk('s3')->delete($product->productImages);
         $product->productImages()->delete();
         $product->delete();
 
