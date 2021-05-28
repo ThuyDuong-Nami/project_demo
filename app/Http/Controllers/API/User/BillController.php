@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\User;
 
+use App\Enums\BillStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CheckOutRequest;
 use App\Models\Bill;
@@ -19,7 +20,6 @@ class BillController extends Controller
         $billArr = array_merge([
             'bill_code' => rand(0000000000, 9999999999),
             'user_id' => $user->id,
-            'status' => 0
         ],
             $validatedData
         );

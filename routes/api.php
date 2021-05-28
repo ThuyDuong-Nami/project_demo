@@ -38,8 +38,11 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('user/search', [Admin\UserController::class, 'search']);
     Route::post('category/search', [Admin\CategoryController::class, 'search']);
     Route::post('product/search', [Admin\ProductController::class, 'search']);
+    Route::post('bill/search', [Admin\BillController::class, 'search']);
 
     Route::post('file/import', [Admin\ProductController::class, 'import']);
+
+    Route::apiResource('bill', Admin\BillController::class)->except('store', 'destroy');
 });
 
 //User
@@ -63,3 +66,4 @@ Route::prefix('public')->group(function (){
     Route::get('category/{category}', [User\HomeController::class, 'productsCategory']);
     Route::get('product/{product}', [User\HomeController::class, 'productDetail']);
 });
+Route::get('export', [Admin\BillController::class, 'export']);
