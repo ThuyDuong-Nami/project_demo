@@ -33,7 +33,7 @@ class BillsExport implements FromCollection, WithHeadings
     public function collection()
     {
         $bills = Bill::select('id', 'bill_code', DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),
-            'user_id', 'address', 'phone','total')->where('status', BillStatus::confirm)->get();
+            'user_id', 'address', 'phone','total')->where('status', BillStatus::delivered)->get();
         foreach ($bills as $bill){
             $user = User::select('username')->where('id', $bill->user_id)->first();
             $bill->user_id = $user->username;
