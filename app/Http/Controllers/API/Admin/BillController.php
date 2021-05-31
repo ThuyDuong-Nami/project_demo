@@ -31,7 +31,6 @@ class BillController extends Controller
 
     public function search()
     {
-
         $word = request()->input('word');
         $search = Bill::where('bill_code', 'like', '%'.$word.'%');
         return responder()->success($search, BillTransformer::class)->respond();
