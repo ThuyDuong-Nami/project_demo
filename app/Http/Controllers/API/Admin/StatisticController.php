@@ -5,10 +5,8 @@ namespace App\Http\Controllers\API\Admin;
 use App\Enums\BillStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Bill;
-use App\Models\BillDetail;
 use App\Models\Product;
 use App\Models\User;
-use App\Transformers\Admin\StatisticTransformer;
 use Illuminate\Support\Facades\DB;
 
 class StatisticController extends Controller
