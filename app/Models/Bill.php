@@ -12,8 +12,9 @@ class Bill extends Model
     protected $fillable = [
         'bill_code',
         'user_id',
-        'product_id',
         'total',
+        'address',
+        'phone',
         'status'
     ];
 
@@ -26,5 +27,16 @@ class Bill extends Model
     public function setPerPage($perPage)
     {
         $this->perPage = $perPage;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'bill_details', 'bill_id', 'product_id');
+
     }
 }
