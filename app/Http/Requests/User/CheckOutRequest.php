@@ -28,8 +28,8 @@ class CheckOutRequest extends FormRequest
     public function rules()
     {
         return [
-            'address' => 'required',
-            'phone' => 'required',
+            'address' => 'required|string',
+            'phone' => 'required|numeric',
             'items' => 'required',
             'total' => 'required',
         ];
