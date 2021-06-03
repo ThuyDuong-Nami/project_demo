@@ -24,9 +24,18 @@ class BillController extends Controller
 
     public function update(StatusRequest $request, Bill $bill)
     {
-        $status = BillStatus::getValue($request->input('status'));
-        $bill->update(['status' => $status]);
-        return responder()->success(['message' => 'Update status success!'])->respond();
+        if ($bill->status == BillStatus::canceled){
+            return responder()->success(['message' => 'This bill cannot edited!'])->respond();
+        }else{
+            $status = BillStatus::getValue($request->input('status'));
+            $bill->update(['status' => $status]);
+            if ($status == BillStatus::canceled) {
+                foreach ($bill->products as $product) {
+                    $product->update(['quantities' => $product->quantities + $product->pivot->quantity]);
+                }
+            }
+            return responder()->success(['message' => 'Update status success!'])->respond();
+        }
     }
 
     public function search()
