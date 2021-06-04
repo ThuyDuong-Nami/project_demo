@@ -12,6 +12,6 @@ final class BillStatus extends Enum implements LocalizedEnum
     const pickup = 1;
     const delivering = 2;
     const delivered = 3;
-    const canceling = 4;
-    const canceled = 5;
+//    const canceling = 4;
+    const canceled = 4;
 }

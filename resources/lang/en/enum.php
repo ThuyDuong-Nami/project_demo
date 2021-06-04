@@ -12,6 +12,6 @@ return [
     BillStatus::pickup => 'Chờ Lấy Hàng',
     BillStatus::delivering => 'Đang Giao',
     BillStatus::delivered => 'Đã Giao Thành Công',
-    BillStatus::canceling => 'Đang Hủy',
+//    BillStatus::canceling => 'Đang Hủy',
     BillStatus::canceled => 'Đã Hủy',
 ];

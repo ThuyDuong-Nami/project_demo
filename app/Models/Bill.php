@@ -36,7 +36,8 @@ class Bill extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'bill_details', 'bill_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'bill_details', 'bill_id', 'product_id')
+                    ->withPivot('quantity', 'price');
 
     }
 }
