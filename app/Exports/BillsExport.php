@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Enums\BillStatus;
 use App\Models\Bill;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -23,7 +24,8 @@ class BillsExport implements FromCollection, WithHeadings
             'User Name',
             'Address',
             'Phone',
-            'Total'
+            'Total',
+            'Products'
         ];
     }
 
@@ -34,9 +36,18 @@ class BillsExport implements FromCollection, WithHeadings
     {
         $bills = Bill::select('id', 'bill_code', DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),
             'user_id', 'address', 'phone','total')->where('status', BillStatus::delivered)->get();
+
         foreach ($bills as $bill){
-            $user = User::select('username')->where('id', $bill->user_id)->first();
-            $bill->user_id = $user->username;
+            $arr = [];
+            if (!$bill->user->username){
+                $bill->user_id = $bill->user->email;
+            }else{
+                $bill->user_id = $bill->user->username;
+            }
+            foreach ($bill->products as $product){
+                array_push($arr, $product->name . ' (x' . $product->pivot->quantity . ')');
+            }
+            $bill->product_name = implode(' | ', $arr);
         }
         return $bills;
     }
