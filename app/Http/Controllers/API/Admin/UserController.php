@@ -33,8 +33,10 @@ class UserController extends Controller
         $validatedData = $request->validated();
 
         if ($image = $request->file('avatar')){
-            $imageName = $image->store('public/avatar');
-            $userArr = array_merge($validatedData, ['avatar' => Storage::url($imageName)]);
+            $name = '/avatar/' . $image->getClientOriginalName();
+            Storage::disk('s3')->put($name, file_get_contents($image));
+            $imageUrl = 'https://gumistore.s3-ap-southeast-1.amazonaws.com'.$name;
+            $userArr = array_merge($validatedData, ['avatar' => $imageUrl]);
             $user = User::create($userArr);
         }else{
             $user = User::create($validatedData);
@@ -65,8 +67,10 @@ class UserController extends Controller
         $validatedData = $request->validated();
 
         if ($image = $request->file('avatar')){
-            $imageName = $image->store('public/avatar');
-            $userArr = array_merge($validatedData, ['avatar' => Storage::url($imageName)]);
+            $name = '/avatar/' . $image->getClientOriginalName();
+            Storage::disk('s3')->put($name, file_get_contents($image));
+            $imageUrl = 'https://gumistore.s3-ap-southeast-1.amazonaws.com'.$name;
+            $userArr = array_merge($validatedData, ['avatar' => $imageUrl]);
             $user->update($userArr);
         }else{
             $user->update($validatedData);

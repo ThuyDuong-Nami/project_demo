@@ -33,8 +33,10 @@ class AdminController extends Controller
         $validatedData = $request->validated();
 
         if ($image = $request->file('avatar')){
-            $imageName = $image->store('public/avatar');
-            $adminArr = array_merge($validatedData, ['avatar' => Storage::url($imageName)]);
+            $name = '/avatar/' . $image->getClientOriginalName();
+            Storage::disk('s3')->put($name, file_get_contents($image));
+            $imageUrl = 'https://gumistore.s3-ap-southeast-1.amazonaws.com'.$name;
+            $adminArr = array_merge($validatedData, ['avatar' => $imageUrl]);
             $admin = Admin::create($adminArr);
         }else{
             $admin = Admin::create($validatedData);
@@ -65,8 +67,10 @@ class AdminController extends Controller
         $validatedData = $request->validated();
 
         if ($image = $request->file('avatar')){
-            $imageName = $image->store('public/avatar');
-            $adminArr = array_merge($validatedData, ['avatar' => Storage::url($imageName)]);
+            $name = '/avatar/' . $image->getClientOriginalName();
+            Storage::disk('s3')->put($name, file_get_contents($image));
+            $imageUrl = 'https://gumistore.s3-ap-southeast-1.amazonaws.com'.$name;
+            $adminArr = array_merge($validatedData, ['avatar' => $imageUrl]);
             $admin->update($adminArr);
         }else{
             $admin->update($validatedData);
