@@ -13,7 +13,9 @@ class StatisticController extends Controller
 {
     public function statistic()
     {
+        $date = getdate();
         $statistics = Bill::where('status', BillStatus::delivered)
+            ->whereMonth('created_at', $date['mon'])
             ->join('bill_details', 'bills.id', '=', 'bill_details.bill_id')
             ->select('bill_details.product_id', DB::raw('sum(bill_details.quantity) as quantities'))
             ->groupBy('bill_details.product_id')
@@ -33,10 +35,13 @@ class StatisticController extends Controller
                 })
                 ->first();
 
-            $user = User::select('email')->where('id', $bills->user_id)->first();
+            $user = User::where('id', $bills->user_id)->first();
             $item->product_name = $product->name;
-            $item->user = $user->email;
-
+            if ($user->username){
+                $item->user = $user->username;
+            }else{
+                $item->user = $user->email;
+            }
         }
 //        dd($statistics);
         return responder()->success($statistics)->respond();
