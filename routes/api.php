@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('export', [Admin\BillController::class, 'export']);
 
     Route::get('statistic', [Admin\StatisticController::class, 'statistic']);
+    Route::get('statisticV2', [Admin\StatisticController::class, 'statisticV2']);
 });
 
 //User
