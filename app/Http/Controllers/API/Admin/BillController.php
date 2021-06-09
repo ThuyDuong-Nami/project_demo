@@ -13,7 +13,8 @@ class BillController extends Controller
 {
     public function index()
     {
-        $bill = Bill::all();
+        $perPage = request()->input('perPage');
+        $bill = Bill::paginate($perPage);
         return responder()->success($bill, BillTransformer::class)->respond();
     }
 
