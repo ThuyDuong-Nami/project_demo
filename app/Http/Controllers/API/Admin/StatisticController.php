@@ -15,8 +15,8 @@ class StatisticController extends Controller
     {
         $date = getdate();
         $statistics = Bill::where('status', BillStatus::delivered)
-            ->whereMonth('created_at', $date['mon'])
             ->join('bill_details', 'bills.id', '=', 'bill_details.bill_id')
+            ->whereMonth('bills.created_at', $date['mon'])
             ->select('bill_details.product_id', DB::raw('sum(bill_details.quantity) as quantities'))
             ->groupBy('bill_details.product_id')
             ->orderBy('quantities', 'Desc')
