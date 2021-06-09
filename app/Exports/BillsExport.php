@@ -34,9 +34,10 @@ class BillsExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        $bills = Bill::where('status', BillStatus::delivered)->select('id', 'bill_code', DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),
-            'user_id', 'address', 'phone','total')->get();
-
+//        $bills = Bill::select('id', 'bill_code', DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),
+//            'user_id', 'address', 'phone','total')->where('status', BillStatus::delivered)->get();
+        $bills = Bill::select('id', 'bill_code', DB::raw("to_char(created_at, 'DD/MM/YYYY')"),
+            'user_id', 'address', 'phone','total')->where('status', BillStatus::delivered)->get();
         foreach ($bills as $bill){
             $arr = [];
             if (!$bill->user->username){
