@@ -20,7 +20,7 @@ class ProductController extends Controller
     public function index()
     {
         $perPage = request()->input('perPage');
-        $products = Product::paginate($perPage);
+        $products = Product::orderBy('updated_at', 'desc')->paginate($perPage);
         return responder()->success($products, ProductTransformer::class)->respond();
     }
 

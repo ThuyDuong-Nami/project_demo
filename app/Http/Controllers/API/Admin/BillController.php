@@ -14,7 +14,7 @@ class BillController extends Controller
     public function index()
     {
         $perPage = request()->input('perPage');
-        $bill = Bill::paginate($perPage);
+        $bill = Bill::orderBy('updated_at', 'desc')->paginate($perPage);
         return responder()->success($bill, BillTransformer::class)->respond();
     }
 

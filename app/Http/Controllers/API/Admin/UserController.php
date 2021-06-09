@@ -18,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         $perPage = request()->input('perPage');
-        $users = User::paginate($perPage);
+        $users = User::orderBy('updated_at', 'desc')->paginate($perPage);
         return responder()->success($users, UserTransformer::class)->respond();
     }
 

@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
         $perPage = request()->input('perPage');
-        $categories = Category::paginate($perPage);
+        $categories = Category::orderBy('updated_at', 'desc')->paginate($perPage);
         return responder()->success($categories, CategoryTransformer::class)->respond();
     }
 

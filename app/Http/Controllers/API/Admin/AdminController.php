@@ -18,7 +18,7 @@ class AdminController extends Controller
     public function index()
     {
         $perPage = request()->input('perPage');
-        $admins = Admin::paginate($perPage);
+        $admins = Admin::orderBy('updated_at', 'desc')->paginate($perPage);
         return responder()->success($admins, AdminTransformer::class)->respond();
     }
 
