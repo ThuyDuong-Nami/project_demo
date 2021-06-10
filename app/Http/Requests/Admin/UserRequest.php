@@ -36,7 +36,7 @@ class UserRequest extends FormRequest
                     'lastname'  => 'string',
                     'username'  => 'string|unique:users,username'.$id,
                     'email'     => 'required|email|unique:users,email'.$id,
-                    'password'  => 'required|min:6',
+//                    'password'  => 'required|min:6',
                     'address'   => 'string',
                     'phone'     => 'numeric|min:10',
                 ];
