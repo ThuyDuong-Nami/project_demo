@@ -25,7 +25,8 @@ class BillsExport implements FromCollection, WithHeadings
             'Address',
             'Phone',
             'Total',
-            'Products'
+            'Products',
+            'Status'
         ];
     }
 
@@ -37,7 +38,7 @@ class BillsExport implements FromCollection, WithHeadings
 //        $bills = Bill::select('id', 'bill_code', DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),
 //            'user_id', 'address', 'phone','total')->where('status', BillStatus::delivered)->get();
         $bills = Bill::select('id', 'bill_code', DB::raw("to_char(created_at, 'DD/MM/YYYY')"),
-            'user_id', 'address', 'phone','total')->where('status', BillStatus::delivered)->get();
+            'user_id', 'address', 'phone','total', 'status')->where('status', BillStatus::delivered)->get();
         foreach ($bills as $bill){
             $arr = [];
             if (!$bill->user->username){
@@ -49,6 +50,7 @@ class BillsExport implements FromCollection, WithHeadings
                 array_push($arr, $product->name . ' (x' . $product->pivot->quantity . ')');
             }
             $bill->product_name = implode(' | ', $arr);
+            $bill->status = __('enum.'.$bill->status);
         }
         return $bills;
     }
