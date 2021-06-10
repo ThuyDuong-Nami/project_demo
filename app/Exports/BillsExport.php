@@ -25,8 +25,8 @@ class BillsExport implements FromCollection, WithHeadings
             'Address',
             'Phone',
             'Total',
-            'Products',
-            'Status'
+            'Status',
+            'Products'
         ];
     }
 
