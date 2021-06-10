@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
 use App\Transformers\Admin\UserTransformer;
+use App\Transformers\User\UserTransformer as UserTrans;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -41,7 +42,7 @@ class UserController extends Controller
         }else{
             $user = User::create($validatedData);
         }
-        return responder()->success($user, UserTransformer::class)->respond();
+        return responder()->success($user, UserTrans::class)->respond();
     }
 
     /**
@@ -52,7 +53,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return responder()->success($user, UserTransformer::class)->respond();
+        return responder()->success($user, UserTrans::class)->respond();
     }
 
     /**
@@ -75,7 +76,7 @@ class UserController extends Controller
         }else{
             $user->update($validatedData);
         }
-        return responder()->success($user, UserTransformer::class)->respond();
+        return responder()->success($user, UserTrans::class)->respond();
     }
 
     /**
