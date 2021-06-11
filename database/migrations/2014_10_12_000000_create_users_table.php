@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('avatar')->default('/storage/avatar/avatar.png');
+            $table->string('avatar')->default('https://gumistore.s3-ap-southeast-1.amazonaws.com/avatar/iconbox1.2.png');
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
             $table->string('username')->unique()->nullable();
