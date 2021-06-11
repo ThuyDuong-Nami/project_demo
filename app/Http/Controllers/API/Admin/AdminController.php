@@ -64,7 +64,11 @@ class AdminController extends Controller
      */
     public function update(AdminRequest $request, Admin $admin)
     {
-        $validatedData = $request->validated();
+        if ($request->input('password') == null) {
+            $validatedData = $request->except('password');
+        } else {
+            $validatedData = $request->validated();
+        }
 
         if ($image = $request->file('avatar')){
             $name = '/avatar/' . $image->getClientOriginalName();

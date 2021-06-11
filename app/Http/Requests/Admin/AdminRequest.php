@@ -35,7 +35,7 @@ class AdminRequest extends FormRequest
                     'name' => 'required|string',
                     'username' => 'required|unique:admins,username'.$id,
                     'email' => 'required|email|unique:admins,email'.$id,
-                    'password' => 'required|min:6',
+                    'password' => 'min:6',
                 ];
                 break;
             default:

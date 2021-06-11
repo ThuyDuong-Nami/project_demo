@@ -65,7 +65,11 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        $validatedData = $request->validated();
+        if ($request->input('password') == null){
+            $validatedData = $request->except('password');
+        }else{
+            $validatedData = $request->validated();
+        }
 
         if ($image = $request->file('avatar')){
             $name = '/avatar/' . $image->getClientOriginalName();
