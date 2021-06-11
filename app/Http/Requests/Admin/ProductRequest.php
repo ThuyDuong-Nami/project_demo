@@ -36,7 +36,7 @@ class ProductRequest extends FormRequest
                     'name' => 'string|unique:products,name'.$id,
                     'description' => 'string',
                     'price' => 'numeric',
-                    'quantities' => 'numeric',
+                    'quantities' => 'numeric|min:0',
                     'categories' => 'required',
                     'categories.*' => 'int'
                 ];
@@ -48,7 +48,7 @@ class ProductRequest extends FormRequest
                     'name' => 'string|unique:products',
                     'description' => 'string',
                     'price' => 'numeric',
-                    'quantities' => 'numeric',
+                    'quantities' => 'numeric|min:0',
                     'categories' => 'required',
                     'categories.*' => 'int'
                 ];
