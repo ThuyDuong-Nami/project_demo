@@ -35,7 +35,7 @@ class StatisticController extends Controller
                 })
                 ->first();
 
-            $user = User::where('id', str_replace( array(' ' , '^'), '', $bills->user_id))->first();
+            $user = User::where('id', $bills->user_id)->first();
             $item->product_name = $product->name;
             if ($user->username){
                 $item->user = $user->username;
