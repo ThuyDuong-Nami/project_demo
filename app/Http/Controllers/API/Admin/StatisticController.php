@@ -26,13 +26,10 @@ class StatisticController extends Controller
         foreach ($statistics as $item) {
             $product = Product::select('name')->where('id', $item->product_id)->first();
 
-            $bills = Bill::where('status', BillStatus::delivered)
+            $bills = Bill::query()->where('status', BillStatus::delivered)
                 ->join('bill_details', 'bills.id', '=', 'bill_details.bill_id')
                 ->where('bill_details.product_id', $item->product_id)
-                ->where('quantity', '=', function ($query) use ($item){
-                    $query->selectRaw('max(quantity)')->from('bill_details')
-                        ->where('bill_details.product_id', $item->product_id);
-                })
+                ->orderBy('quantity', 'DESC')
                 ->first();
 
             $user = User::where('id', $bills->user_id)->first();
