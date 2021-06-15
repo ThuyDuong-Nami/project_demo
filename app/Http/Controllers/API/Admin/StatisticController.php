@@ -20,7 +20,7 @@ class StatisticController extends Controller
             ->select('bill_details.product_id', DB::raw('sum(bill_details.quantity) as quantities'))
             ->groupBy('bill_details.product_id')
             ->orderBy('quantities', 'Desc')
-            ->limit(10)
+            ->limit(10)->distinct()
             ->get();
 
         foreach ($statistics as $item) {
